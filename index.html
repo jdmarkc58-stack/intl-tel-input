@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>International Phone Registration</title>
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/intl-tel-input@29.5.8/dist/css/intlTelInput.min.css">
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background: #f1f5f9;
+}
+
+.container {
+    max-width: 450px;
+    margin: 50px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+h2 {
+    text-align: center;
+    color: #173b70;
+}
+
+p {
+    text-align: center;
+    color: #666;
+}
+
+label {
+    display: block;
+    margin: 18px 0 8px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    font-size: 16px;
+}
+
+.iti {
+    width: 100%;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 22px;
+    border: none;
+    border-radius: 7px;
+    background: #1769aa;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #104d80;
+}
+
+#result {
+    margin-top: 20px;
+    padding: 12px;
+    background: #e8f5e9;
+    border-radius: 7px;
+    overflow-wrap: anywhere;
+    display: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>International Phone Registration</h2>
+
+<p>Select your country and enter your phone number.</p>
+
+<form id="phoneForm">
+
+<label for="phone">Phone Number</label>
+
+<input
+type="tel"
+id="phone"
+name="phone"
+placeholder="Enter phone number"
+required
+>
+
+<button type="submit">Validate Number</button>
+
+</form>
+
+<div id="result"></div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@29.5.8/dist/js/intlTelInput.min.js"></script>
+
+<script>
+
+const input = document.querySelector("#phone");
+
+const iti = window.intlTelInput(input, {
+
+    initialCountry: "ke",
+
+    separateDialCode: true,
+
+    countrySearch: true,
+
+    nationalMode: true,
+
+    loadUtils: () =>
+        import("https://cdn.jsdelivr.net/npm/intl-tel-input@29.5.8/dist/js/utils.js")
+
+});
+
+document.getElementById("phoneForm").addEventListener("submit",
+async function(e) {
+
+    e.preventDefault();
+
+    const result = document.getElementById("result");
+
+    if (!iti.isValidNumber()) {
+
+        result.style.display = "block";
+        result.style.background = "#ffebee";
+        result.innerHTML = "Please enter a valid phone number.";
+
+        return;
+    }
+
+    const internationalNumber = iti.getNumber();
+
+    result.style.display = "block";
+    result.style.background = "#e8f5e9";
+
+    result.innerHTML =
+        "<strong>Valid phone number!</strong><br><br>" +
+        "International format: " +
+        internationalNumber;
+
+});
+
+</script>
+
+</body>
+  </html>
